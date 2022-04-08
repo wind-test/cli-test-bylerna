@@ -24,7 +24,7 @@
     "url": "git+https://github.com/wind-test/cli-test-bylerna.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "test": "echo \"Error: run tests from core\" "
   },
   "bugs": {
     "url": "https://github.com/wind-test/cli-test-bylerna/issues"
