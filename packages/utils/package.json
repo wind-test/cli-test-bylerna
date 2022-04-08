@@ -10,6 +10,9 @@
   ],
   "author": "WindDancer <164173925@qq.com>",
   "homepage": "https://github.com/wind-test/cli-test-bylerna#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "ISC",
   "main": "lib/utils.js",
   "directories": {

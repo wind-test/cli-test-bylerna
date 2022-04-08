@@ -9,6 +9,9 @@
     "core"
   ],
   "author": "WindDancer <164173925@qq.com>",
+  "publishConfig": {
+    "access": "public"
+  },
   "homepage": "https://github.com/wind-test/cli-test-bylerna#readme",
   "license": "ISC",
   "main": "lib/core.js",
