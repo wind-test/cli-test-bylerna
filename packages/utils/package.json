@@ -1,6 +1,6 @@
 {
   "name": "@wind-webcli/utils",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "脚手架工具库utils",
   "keywords": [
     "cli",
@@ -33,6 +33,6 @@
     "url": "https://github.com/wind-test/cli-test-bylerna/issues"
   },
   "dependencies": {
-    "@wind-webcli/core": "^1.1.0"
+    "@wind-webcli/core": "^1.1.1"
   }
 }
