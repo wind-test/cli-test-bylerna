@@ -1,6 +1,6 @@
 {
   "name": "@wind-webcli/core",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "脚手架核心库core",
   "keywords": [
     "cli",
@@ -36,7 +36,7 @@
     "url": "https://github.com/wind-test/cli-test-bylerna/issues"
   },
   "dependencies": {
-    "@wind-webcli/utils": "^1.1.1",
+    "@wind-webcli/utils": "^1.2.0",
     "dedent": "^0.7.0",
     "npmlog": "^6.0.1",
     "yargs": "^17.4.1"
