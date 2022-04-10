@@ -19,6 +19,9 @@
     "lib": "lib",
     "test": "__tests__"
   },
+  "bin": {
+    "cli-test": "index.js"
+  },
   "files": [
     "lib"
   ],
@@ -33,6 +36,9 @@
     "url": "https://github.com/wind-test/cli-test-bylerna/issues"
   },
   "dependencies": {
-    "@wind-webcli/utils": "^1.1.1"
+    "@wind-webcli/utils": "^1.1.1",
+    "dedent": "^0.7.0",
+    "npmlog": "^6.0.1",
+    "yargs": "^17.4.1"
   }
 }

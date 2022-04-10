@@ -33,6 +33,6 @@
     "url": "https://github.com/wind-test/cli-test-bylerna/issues"
   },
   "dependencies": {
-    "@wind-webcli/core": "^1.1.1"
+    "yargs": "^17.4.1"
   }
 }
