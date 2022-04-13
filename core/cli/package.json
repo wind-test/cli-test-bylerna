@@ -1,0 +1,45 @@
+{
+  "name": "@wind-webcli/core",
+  "version": "1.2.0",
+  "description": "脚手架核心库core",
+  "keywords": [
+    "cli",
+    "web",
+    "js",
+    "core"
+  ],
+  "author": "WindDancer <164173925@qq.com>",
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/wind-test/cli-test-bylerna#readme",
+  "license": "ISC",
+  "main": "",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "bin": {
+    "cli-test": "bin/index.js"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wind-test/cli-test-bylerna.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from core\" "
+  },
+  "bugs": {
+    "url": "https://github.com/wind-test/cli-test-bylerna/issues"
+  },
+  "dependencies": {
+    "@wind-webcli/utils": "file:../../utils/utils",
+    "dedent": "^0.7.0",
+    "import-local": "^3.1.0",
+    "npmlog": "^6.0.1",
+    "yargs": "^17.4.1"
+  }
+}

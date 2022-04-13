@@ -1,11 +1,11 @@
-# `core`
+# `@core/exec`
 
 > TODO: description
 
 ## Usage
 
 ```
-const core = require('core');
+const exec = require('@core/exec');
 
 // TODO: DEMONSTRATE API
 ```

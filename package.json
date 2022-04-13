@@ -1,7 +1,7 @@
 {
   "name": "cli-test-bylerna",
   "version": "1.0.0",
-  "description": "",
+  "description": "使用lerna创建的测试版的脚手架",
   "main": "index.js",
   "publishConfig": {
     "access": "public"
