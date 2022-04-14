@@ -1,6 +1,6 @@
 {
   "name": "@wind-webcli/core",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "脚手架核心库core",
   "keywords": [
     "cli",
