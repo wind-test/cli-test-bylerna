@@ -36,6 +36,7 @@
     "url": "https://github.com/wind-test/cli-test-bylerna/issues"
   },
   "dependencies": {
+    "@wind-webcli/get-npm-info": "file:../../utils/get-npm-info",
     "@wind-webcli/log": "file:../../utils/log",
     "@wind-webcli/utils": "file:../../utils/utils",
     "colors": "^1.4.0",
