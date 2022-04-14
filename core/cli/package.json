@@ -36,10 +36,18 @@
     "url": "https://github.com/wind-test/cli-test-bylerna/issues"
   },
   "dependencies": {
+    "@wind-webcli/log": "file:../../utils/log",
     "@wind-webcli/utils": "file:../../utils/utils",
+    "colors": "^1.4.0",
     "dedent": "^0.7.0",
+    "dotenv": "^16.0.0",
     "import-local": "^3.1.0",
+    "minimist": "^1.2.6",
     "npmlog": "^6.0.1",
+    "path-exists": "^4.0.0",
+    "root-check": "^1.0.0",
+    "semver": "^7.3.7",
+    "user-home": "^3.0.0",
     "yargs": "^17.4.1"
   }
 }

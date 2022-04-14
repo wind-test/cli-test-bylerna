@@ -1,11 +1,11 @@
 {
-  "name": "@wind-webcli/exec",
+  "name": "@wind-webcli/log",
   "version": "1.2.0",
-  "description": "脚手架包执行库",
+  "description": "封装的打印工具库",
   "author": "WindDancer <164173925@qq.com>",
   "homepage": "https://github.com/wind-test/cli-test-bylerna#readme",
   "license": "ISC",
-  "main": "lib/exec.js",
+  "main": "lib/index.js",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -25,5 +25,8 @@
   },
   "bugs": {
     "url": "https://github.com/wind-test/cli-test-bylerna/issues"
+  },
+  "dependencies": {
+    "npmlog": "^6.0.1"
   }
 }
