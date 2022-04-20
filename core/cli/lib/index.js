@@ -8,8 +8,9 @@ const log = require('@wind-webcli/log');
 const userHome = require('user-home'); //获取当前用户主目录
 const pathExists = require('path-exists').sync;
 const path = require('path');
+const { Command } = require('commander');
 
-let config;
+const program = new Command();
 
 async function core() {
   checkPkgVersion();
@@ -17,8 +18,51 @@ async function core() {
   await checkGlobalUpdate();
   checkRoot();
   checkUserHone();
-  checkInputArgs();
+  // checkInputArgs();
   checkEnv();
+  registerCommand();
+}
+
+// 注册命令
+function registerCommand() {
+  program
+    .name(Object.keys(pkg.bin)[0])
+    .usage('<command> [options]')
+    .version(pkg.version)
+    .option('-d, --debug', '是否开启调试模式', false)
+    .option('-r, --register <register>', '下载模块使用的镜像源', 'https://registry.npmjs.org' )
+
+  program
+    .command('init [projectName]')
+    .description('初始化一个项目')
+    .option('-f, --force', '是否强制初始化该项目', false)
+    .action((projectName) => {
+      log.info('正在初始化项目...项目名称是：', projectName);
+    });
+
+  program.on('option:debug', function () {
+    if (program.opts().debug) {
+      process.env.LOG_LEVEL = 'verbose';
+      log.info('已开启调试模式');
+    } else {
+      process.env.LOG_LEVEL = 'info';
+    }
+    log.LOG_LEVEL = process.env.LOG_LEVEL;
+  });
+
+  program.on('command:*', function (cmdObj) {
+    log.error('未知的命令：', cmdObj[0]);
+    const availableCommands = program.commands.map(cmd => cmd.name())
+    log.info('可用的命令：', availableCommands.join())
+  });
+
+  program.parse(process.argv);
+
+  if (program.args && program.args.length < 1) {
+    // 如果没有输入命令,则打印帮助信息
+    program.outputHelp();
+    console.log();
+  }
 }
 
 // 检查当前脚手架版本号
@@ -52,23 +96,23 @@ function checkUserHone() {
   }
 }
 
-// 检查入参
-function checkInputArgs() {
-  const minimist = require('minimist'); //获取入口参数
-  const args = minimist(process.argv.slice(2));
-  checkArgs(args);
-  log.verbose('你看到这条说明已开启debug模式');
-}
+// // 检查入参
+// function checkInputArgs() {
+//   const minimist = require('minimist'); //获取入口参数
+//   const args = minimist(process.argv.slice(2));
+//   checkArgs(args);
+//   log.verbose('你看到这条说明已开启debug模式');
+// }
 
-// 判断是否为debug模式
-function checkArgs(args) {
-  if (args.debug) {
-    process.env.LOG_LEVEL = 'verbose';
-  } else {
-    process.env.LOG_LEVEL = 'info';
-  }
-  log.level = process.env.LOG_LEVEL;
-}
+// // 判断是否为debug模式
+// function checkArgs(args) {
+//   if (args.debug) {
+//     process.env.LOG_LEVEL = 'verbose';
+//   } else {
+//     process.env.LOG_LEVEL = 'info';
+//   }
+//   log.level = process.env.LOG_LEVEL;
+// }
 
 // 检查环境变量
 function checkEnv() {
