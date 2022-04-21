@@ -1,6 +1,6 @@
 {
   "name": "@wind-webcli/package",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "npm modules 相关操作",
   "keywords": [
     "cli",
@@ -32,7 +32,7 @@
     "url": "https://github.com/wind-test/cli-test-bylerna/issues"
   },
   "dependencies": {
-    "pkg-dir": "^5.0.0",
-    "@wind-webcli/format-path": "file:../../utils/format-path"
+    "@wind-webcli/format-path": "file:../../utils/format-path",
+    "pkg-dir": "^5.0.0"
   }
 }
