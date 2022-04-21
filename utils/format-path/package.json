@@ -1,12 +1,7 @@
 {
-  "name": "@wind-webcli/package",
+  "name": "@wind-webcli/format-path",
   "version": "1.4.2",
-  "description": "npm modules 相关操作",
-  "keywords": [
-    "cli",
-    "npm",
-    "package"
-  ],
+  "description": "路径兼容",
   "author": "huangjitao <164173925@qq.com>",
   "homepage": "https://github.com/wind-test/cli-test-bylerna#readme",
   "license": "ISC",
@@ -30,9 +25,5 @@
   },
   "bugs": {
     "url": "https://github.com/wind-test/cli-test-bylerna/issues"
-  },
-  "dependencies": {
-    "pkg-dir": "^5.0.0",
-    "@wind-webcli/format-path": "file:../../utils/format-path"
   }
 }

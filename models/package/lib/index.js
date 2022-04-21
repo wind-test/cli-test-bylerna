@@ -1,5 +1,8 @@
 'use strict';
 
+const pkgDir = require('pkg-dir').sync;
+const formatPath = require('@wind-webcli/format-path');
+const path = require('path');
 class Package {
   constructor({ targetPath, storeDir, packageName, packageVersion }) {
     // package目标路径
@@ -27,7 +30,20 @@ class Package {
   install() {}
 
   // TO-DO 获取入口文件路径
-  getRootFilePath() {}
+  getRootFilePath() {
+    // 1. 获取package.json所在目录
+    const dir = pkgDir(this.targetPath);
+    if (dir) {
+      // 2. 读取package.json
+      const pkgFile = require(path.resolve(dir, 'package.json'));
+      // 3. 寻找main/lib
+      if (pkgFile && pkgFile.main) {
+        // 4. 路径的兼容(macOS/windows)
+        return formatPath(path.resolve(dir, pkgFile.main));
+      }
+    }
+    return null;
+  }
 }
 
 module.exports = Package;

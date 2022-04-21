@@ -13,8 +13,8 @@ function exec() {
   const homePath = process.env.CLI_HOME_PATH;
   let storeDir = '';
   let pkg;
-  log.debug('targetPath', targetPath);
-  log.debug('homePath', homePath);
+  log.verbose('targetPath', targetPath);
+  log.verbose('homePath', homePath);
   // 拿到commander对象本身
   const cmdObj = arguments[arguments.length - 1]
   const cmdName = cmdObj.name()
@@ -26,7 +26,7 @@ function exec() {
     packageName,
     packageVersion
   })
-  pkg.printAttr()
+  console.log('入口文件为：',pkg.getRootFilePath())
 }
 
 module.exports = exec;
