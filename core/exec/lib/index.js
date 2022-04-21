@@ -3,5 +3,5 @@
 module.exports = exec;
 
 function exec() {
-    // TODO
+  console.log('正在初始化');
 }

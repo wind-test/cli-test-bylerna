@@ -1,8 +1,13 @@
 {
-  "name": "@wind-webcli/exec",
-  "version": "1.3.1",
-  "description": "脚手架包执行库",
-  "author": "WindDancer <164173925@qq.com>",
+  "name": "@wind-webcli/init",
+  "version": "1.4.0",
+  "description": "脚手架初始化命令",
+  "keywords": [
+    "cli",
+    "js",
+    "init"
+  ],
+  "author": "huangjitao <164173925@qq.com>",
   "homepage": "https://github.com/wind-test/cli-test-bylerna#readme",
   "license": "ISC",
   "main": "lib/index.js",
@@ -18,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wind-test/cli-test-bylerna.git"
+    "url": "git+https://github.com/wind-test/cli-test-bylerna.git"
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1"

@@ -9,6 +9,8 @@ const userHome = require('user-home'); //获取当前用户主目录
 const pathExists = require('path-exists').sync;
 const path = require('path');
 const { Command } = require('commander');
+// const init = require('@wind-webcli/init');
+const exec = require('@wind-webcli/exec')
 
 const program = new Command();
 
@@ -31,14 +33,13 @@ function registerCommand() {
     .version(pkg.version)
     .option('-d, --debug', '是否开启调试模式', false)
     .option('-r, --register <register>', '下载模块使用的镜像源', 'https://registry.npmjs.org' )
+    .option('-tp, targetPath <targetPath>', '是否指定本地文件路径')
 
   program
     .command('init [projectName]')
     .description('初始化一个项目')
     .option('-f, --force', '是否强制初始化该项目', false)
-    .action((projectName) => {
-      log.info('正在初始化项目...项目名称是：', projectName);
-    });
+    .action(exec);
 
   program.on('option:debug', function () {
     if (program.opts().debug) {
@@ -48,6 +49,10 @@ function registerCommand() {
       process.env.LOG_LEVEL = 'info';
     }
     log.LOG_LEVEL = process.env.LOG_LEVEL;
+  });
+
+  program.on('option:targetPath', function () {
+    process.env.CLI_TARGET_PATH = program.opts().targetPath
   });
 
   program.on('command:*', function (cmdObj) {

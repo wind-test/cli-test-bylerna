@@ -37,6 +37,8 @@
   },
   "dependencies": {
     "@wind-webcli/get-npm-info": "file:../../utils/get-npm-info",
+    "@wind-webcli/exec": "file:../exec",
+    "@wind-webcli/init": "file:../../commands/init",
     "@wind-webcli/log": "file:../../utils/log",
     "@wind-webcli/utils": "file:../../utils/utils",
     "colors": "^1.4.0",
