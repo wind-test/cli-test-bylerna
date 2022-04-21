@@ -1,8 +1,13 @@
 {
-  "name": "@wind-webcli/exec",
+  "name": "@wind-webcli/package",
   "version": "1.4.1",
-  "description": "脚手架包执行库",
-  "author": "WindDancer <164173925@qq.com>",
+  "description": "npm modules 相关操作",
+  "keywords": [
+    "cli",
+    "npm",
+    "package"
+  ],
+  "author": "huangjitao <164173925@qq.com>",
   "homepage": "https://github.com/wind-test/cli-test-bylerna#readme",
   "license": "ISC",
   "main": "lib/index.js",
@@ -18,16 +23,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wind-test/cli-test-bylerna.git"
+    "url": "git+https://github.com/wind-test/cli-test-bylerna.git"
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/wind-test/cli-test-bylerna/issues"
-  },
-  "dependencies": {
-    "@wind-webcli/log": "file:../../utils/log",
-    "@wind-webcli/package": "file:../../models/package"
   }
 }
