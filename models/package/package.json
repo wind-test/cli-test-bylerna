@@ -1,6 +1,6 @@
 {
   "name": "@wind-webcli/package",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "npm modules 相关操作",
   "keywords": [
     "cli",
