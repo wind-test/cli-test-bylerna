@@ -6,8 +6,7 @@ const path = require('path');
 
 // 命令动态加载对应的npm包名映射
 const SETTING = {
-  // init: '@wind-webcli/init',
-  init: '@windhjt/test',
+  init: '@wind-webcli/init',
 };
 
 async function exec() {
@@ -34,17 +33,23 @@ async function exec() {
       packageName,
       packageVersion,
     });
-    await pkg.install();
+    if (await pkg.exists()) {
+      // 更新npm包
+      await pkg.update()
+    } else {
+      // 下载npm包
+      await pkg.install();
+    }
   } else {
     pkg = new Package({
       targetPath,
       packageName,
       packageVersion,
     });
-    const rootFile = pkg.getRootFilePath();
-    if (rootFile) {
-      require(rootFile).apply(null, arguments);
-    }
+  }
+  const rootFile = pkg.getRootFilePath();
+  if (rootFile) {
+    require(rootFile).apply(null, arguments);
   }
 }
 

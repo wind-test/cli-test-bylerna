@@ -16,5 +16,5 @@ function init(projectName, options, command) {
   // 第三个参数为命令对象本身，通过parent.opts可以获取全局参数选项
   console.log('命令的全局参数选项：', command.parent.opts());
   // 通过监听全局参数选项，将其挂载进程上，可以实现与上述相同的效果
-  console.log('命令的全局参数选项- targetPath：', process.env.CLI_TARGET_PATH);
+  console.log('命令的全局参数选项-targetPath：', process.env.CLI_TARGET_PATH);
 }
