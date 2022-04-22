@@ -1,6 +1,6 @@
 {
   "name": "@wind-webcli/exec",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "脚手架包执行库",
   "author": "WindDancer <164173925@qq.com>",
   "homepage": "https://github.com/wind-test/cli-test-bylerna#readme",
