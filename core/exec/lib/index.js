@@ -1,14 +1,16 @@
 'use strict';
 
-const log = require('@wind-webcli/log')
-const Package = require("@wind-webcli/package")
+const log = require('@wind-webcli/log');
+const Package = require('@wind-webcli/package');
+const path = require('path');
 
 // 命令动态加载对应的npm包名映射
 const SETTING = {
-  init: '@wind-webcli/init',
+  // init: '@wind-webcli/init',
+  init: '@windhjt/test',
 };
 
-function exec() {
+async function exec() {
   let targetPath = process.env.CLI_TARGET_PATH;
   const homePath = process.env.CLI_HOME_PATH;
   let storeDir = '';
@@ -16,17 +18,34 @@ function exec() {
   log.verbose('targetPath', targetPath);
   log.verbose('homePath', homePath);
   // 拿到commander对象本身
-  const cmdObj = arguments[arguments.length - 1]
-  const cmdName = cmdObj.name()
-  const packageName = SETTING[cmdName]
-  const packageVersion = 'latest'
-  pkg = new Package({
-    targetPath,
-    storeDir,
-    packageName,
-    packageVersion
-  })
-  console.log('入口文件为：',pkg.getRootFilePath())
+  const cmdObj = arguments[arguments.length - 1];
+  const cmdName = cmdObj.name();
+  const packageName = SETTING[cmdName];
+  const packageVersion = 'latest';
+  if (!targetPath) {
+    //生成缓存路径
+    targetPath = path.resolve(homePath, 'dependencies');
+    storeDir = path.resolve(targetPath, 'node_modules');
+    log.verbose('targetPath:', targetPath);
+    log.verbose('storeDir:', storeDir);
+    pkg = new Package({
+      targetPath,
+      storeDir,
+      packageName,
+      packageVersion,
+    });
+    await pkg.install();
+  } else {
+    pkg = new Package({
+      targetPath,
+      packageName,
+      packageVersion,
+    });
+    const rootFile = pkg.getRootFilePath();
+    if (rootFile) {
+      require(rootFile).apply(null, arguments);
+    }
+  }
 }
 
 module.exports = exec;

@@ -33,6 +33,10 @@
   },
   "dependencies": {
     "@wind-webcli/format-path": "file:../../utils/format-path",
+    "@wind-webcli/get-npm-info": "file:../../utils/get-npm-info",
+    "fs-extra": "^10.1.0",
+    "npminstall": "^6.1.0",
+    "path-exists": "^4.0.0",
     "pkg-dir": "^5.0.0"
   }
 }

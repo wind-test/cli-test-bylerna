@@ -27,6 +27,7 @@ function getDefaultRegistry(isOriginal = false) {
   return isOriginal ? 'https://registry.npmjs.org/' : 'https://registry.npm.taobao.org/';
 }
 
+// 获取所有版本号
 async function getNpmVersions(npmName, registry) {
   const data = await getNpmInfo(npmName, registry);
   if (data) {
@@ -36,6 +37,7 @@ async function getNpmVersions(npmName, registry) {
   }
 }
 
+// 获取大于指定版本号的版本号
 function getSemverVersions(baseVersion, versions) {
   const satisfyVersions = versions.filter((version) =>
     semver.satisfies(version, `^${baseVersion}`),
@@ -44,6 +46,7 @@ function getSemverVersions(baseVersion, versions) {
   return semverVersions;
 }
 
+// 获取大于指定版本号的最新版本号
 async function getNpmSemverVersion(baseVersion, npmName, registry) {
   const versions = await getNpmVersions(npmName, registry);
   const newVersions = getSemverVersions(baseVersion, versions);
@@ -52,9 +55,20 @@ async function getNpmSemverVersion(baseVersion, npmName, registry) {
   }
 }
 
+// 获取最新版本号
+async function getNpmLatestVersion(npmName, registry) {
+  let versions = await getNpmVersions(npmName, registry);
+  if (versions) {
+    return versions.sort((a, b) => (semver.gt(b, a) ? 1 : -1))[0];
+  }
+  return null;
+}
+
 module.exports = {
   getNpmInfo,
   getNpmVersions,
   getSemverVersions,
   getNpmSemverVersion,
+  getNpmLatestVersion,
+  getDefaultRegistry
 };
