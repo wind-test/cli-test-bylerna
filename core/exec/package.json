@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@wind-webcli/log": "file:../../utils/log",
+    "@wind-webcli/utils": "file:../../utils/utils",
     "@wind-webcli/package": "file:../../models/package"
   }
 }

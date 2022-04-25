@@ -6,15 +6,32 @@ const semver = require('semver');
 
 class Command {
   constructor(argv) {
-      console.log(argv)
+    if (!argv) {
+      throw new Error('参数不得为空');
+    }
+    if (!Array.isArray(argv)) {
+      throw new Error('参数必须维数组');
+    }
+    if (argv.length < 1) {
+      throw new Error('参数列表必须维数组');
+    }
     this._argv = argv;
     let runner = new Promise((resolve, reject) => {
       let chain = Promise.resolve();
       chain = chain.then(() => {
         this.checkNodeVersion();
       });
+      chain = chain.then(() => this.initArgs())
       chain.catch((e) => log.error(e.message));
     });
+  }
+
+  // 初始化参数
+  initArgs() {
+    this._cmd = this._argv[this._argv.length - 1];
+    this._argv = this._argv.splice(0, this._argv.length - 1);
+    console.log(this._cmd);
+    console.log(this._argv);
   }
 
   // 检查Node版本号
