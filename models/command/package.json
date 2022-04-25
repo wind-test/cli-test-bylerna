@@ -1,12 +1,7 @@
 {
-  "name": "@wind-webcli/init",
+  "name": "@wind-webcli/command",
   "version": "1.4.5",
-  "description": "脚手架初始化命令",
-  "keywords": [
-    "cli",
-    "js",
-    "init"
-  ],
+  "description": "脚手架命令类封装",
   "author": "huangjitao <164173925@qq.com>",
   "homepage": "https://github.com/wind-test/cli-test-bylerna#readme",
   "license": "ISC",
@@ -32,6 +27,7 @@
     "url": "https://github.com/wind-test/cli-test-bylerna/issues"
   },
   "dependencies": {
-    "@wind-webcli/command": "file:../../models/command"
+    "@wind-webcli/log": "file:../../utils/log",
+    "semver": "^7.3.7"
   }
 }

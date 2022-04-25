@@ -16,11 +16,9 @@ const program = new Command();
 
 async function core() {
   checkPkgVersion();
-  checkNodeVersion();
   await checkGlobalUpdate();
   checkRoot();
   checkUserHone();
-  // checkInputArgs();
   checkEnv();
   registerCommand();
 }
@@ -73,17 +71,6 @@ function registerCommand() {
 // 检查当前脚手架版本号
 function checkPkgVersion() {
   log.info('cli当前版本是', pkg.version);
-}
-
-// 检查Node版本号
-function checkNodeVersion() {
-  //第一步，获取当前Node版本号
-  const currentVersion = process.version;
-  const lastVersion = constants.LOWEST_NODE_VERSION;
-  //第二步，对比最低版本号
-  if (!semver.gte(currentVersion, lastVersion)) {
-    log.error(colors.red(`wind-webcli 需要安装v${lastVersion}以上版本的Node.js`));
-  }
 }
 
 // 检查是否root启动
