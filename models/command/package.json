@@ -1,6 +1,6 @@
 {
   "name": "@wind-webcli/command",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "description": "脚手架命令类封装",
   "author": "huangjitao <164173925@qq.com>",
   "homepage": "https://github.com/wind-test/cli-test-bylerna#readme",

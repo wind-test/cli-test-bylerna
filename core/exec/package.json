@@ -1,6 +1,6 @@
 {
   "name": "@wind-webcli/exec",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "description": "脚手架包执行库",
   "author": "WindDancer <164173925@qq.com>",
   "homepage": "https://github.com/wind-test/cli-test-bylerna#readme",
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@wind-webcli/log": "file:../../utils/log",
-    "@wind-webcli/utils": "file:../../utils/utils",
-    "@wind-webcli/package": "file:../../models/package"
+    "@wind-webcli/package": "file:../../models/package",
+    "@wind-webcli/utils": "file:../../utils/utils"
   }
 }
