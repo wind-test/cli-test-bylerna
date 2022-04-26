@@ -35,6 +35,7 @@
     "@wind-webcli/command": "file:../../models/command",
     "@wind-webcli/log": "file:../../utils/log",
     "fs-extra": "^10.1.0",
-    "inquirer": "^8.2.2"
+    "inquirer": "^8.2.2",
+    "semver": "^7.3.7"
   }
 }
