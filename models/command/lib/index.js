@@ -22,6 +22,8 @@ class Command {
         this.checkNodeVersion();
       });
       chain = chain.then(() => this.initArgs())
+      chain = chain.then(() => this.init())
+      chain = chain.then(() => this.exec())
       chain.catch((e) => log.error(e.message));
     });
   }
@@ -29,9 +31,7 @@ class Command {
   // 初始化参数
   initArgs() {
     this._cmd = this._argv[this._argv.length - 1];
-    this._argv = this._argv.splice(0, this._argv.length - 1);
-    console.log(this._cmd);
-    console.log(this._argv);
+    this._argv = this._argv.splice(0, this._argv.length - 1)
   }
 
   // 检查Node版本号
@@ -46,11 +46,11 @@ class Command {
   }
 
   exec() {
-    throw 'exec方法必须实现';
+    throw new Error('exec方法必须实现');
   }
 
   init() {
-    throw 'init方法必须实现';
+    throw new Error('init方法必须实现');
   }
 }
 

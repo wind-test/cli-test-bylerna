@@ -32,6 +32,9 @@
     "url": "https://github.com/wind-test/cli-test-bylerna/issues"
   },
   "dependencies": {
-    "@wind-webcli/command": "file:../../models/command"
+    "@wind-webcli/command": "file:../../models/command",
+    "@wind-webcli/log": "file:../../utils/log",
+    "fs-extra": "^10.1.0",
+    "inquirer": "^8.2.2"
   }
 }
