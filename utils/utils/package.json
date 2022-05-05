@@ -1,6 +1,6 @@
 {
   "name": "@wind-webcli/utils",
-  "version": "1.4.7",
+  "version": "1.5.2",
   "description": "脚手架工具库utils",
   "keywords": [
     "cli",
