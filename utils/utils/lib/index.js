@@ -1,13 +1,6 @@
 'use strict';
 
-function add(a, b) {
-  console.log("tools库，调用函数add,入参：%d, %d",a ,b)
-  return a + b;
-}
-function min(a, b) {
-  console.log("tools库，调用函数min,入参：%d, %d",a ,b)
-  return Math.min(a, b);
-}
+const { Spinner } = require('cli-spinner');
 
 // 针对windows平台，对执行的脚本进行修改
 function exec(command, args, options) {
@@ -17,4 +10,17 @@ function exec(command, args, options) {
   return require('child_process').spawn(cmd, cmdArgs, options || {});
 }
 
-module.exports = { add, min, exec };
+// 命令行loading效果
+function spinnerStart(msg, spinnerString ='|\-\\') {
+  const spinner = new Spinner(`${msg} %s`)
+  spinner.setSpinnerString(spinnerString)
+  spinner.start()
+  return spinner
+}
+
+// 命令行缓冲效果
+function sleep(timeout = 1000) {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
+module.exports = { exec, spinnerStart, sleep };

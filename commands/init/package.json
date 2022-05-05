@@ -34,6 +34,9 @@
   "dependencies": {
     "@wind-webcli/command": "file:../../models/command",
     "@wind-webcli/log": "file:../../utils/log",
+    "@wind-webcli/package": "file:../../models/package",
+    "@wind-webcli/utils": "file:../../utils/utils",
+    "user-home": "^3.0.0",
     "fs-extra": "^10.1.0",
     "inquirer": "^8.2.2",
     "semver": "^7.3.7"

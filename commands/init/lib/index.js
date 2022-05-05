@@ -6,6 +6,11 @@ const inquirer = require('inquirer');
 const fse = require('fs-extra');
 const log = require('@wind-webcli/log');
 const semver = require('semver');
+const { TEMPLATE_LIST } = require('./consts');
+const Package = require('@wind-webcli/package')
+const path = require('path')
+const userHome = require('user-home')
+const { spinnerStart, sleep } =  require('@wind-webcli/utils')
 class InitCommand extends Command {
   init() {
     this.projectName = this._argv[0]; // 项目名称
@@ -17,12 +22,18 @@ class InitCommand extends Command {
   async exec() {
     try {
       // 1. 准备阶段
-      await this.prepare();
+      const projectInfo = await this.prepare();
+      if (projectInfo) {
+        // 下载模板
+        this.projectInfo = projectInfo
+        await this.downloadTemplate()
+      }
     } catch (error) {
       log.error(error.message);
     }
   }
 
+  // 准备阶段
   async prepare() {
     // 判断当前执行目录是否为空
     const localPath = process.cwd();
@@ -57,8 +68,53 @@ class InitCommand extends Command {
         }
       }
     }
-    const projectInfo = await this.getProjectInfo();
-    log.verbose('填写的项目信息为：', JSON.stringify(projectInfo));
+    return this.getProjectInfo()
+  }
+
+  // 下载模板
+  async downloadTemplate() {
+    const templateInfo = TEMPLATE_LIST.find(i => i.value = this.projectInfo.projectTemplate)
+    const { value, version } = templateInfo
+    const targetPath = path.resolve(userHome, '.wind-webcli', 'template');
+    const storeDir = path.resolve(userHome, '.wind-webcli', 'template', 'node_modules');
+    const templatePkg = new Package({
+      targetPath,
+      storeDir,
+      packageName: value,
+      packageVersion: version,
+    })
+    log.verbose(targetPath, storeDir)
+    if (!await templatePkg.exists()) {
+      // 下载模板
+      const spinner = spinnerStart("开始下载模板中...")
+      await sleep()
+      try {
+        await templatePkg.install()
+      } catch (error) {
+        throw error
+      } finally {
+        spinner.stop(true)
+        if (await templatePkg.exists()) {
+          log.success('下载模板成功');
+          this.templatePkg = templatePkg;
+        }
+      }
+    } else {
+      // 更新模板
+      const spinner = spinnerStart('正在更新模板中...');
+      await sleep();
+      try {
+        await templatePkg.update();
+      } catch (error) {
+        throw error;
+      } finally {
+        spinner.stop(true);
+        if (await templatePkg.exists()) {
+          log.success('更新模板成功');
+          this.templatePkg = templatePkg;
+        }
+      }
+    }
   }
 
   // 判断目录是否为空
@@ -149,7 +205,7 @@ class InitCommand extends Command {
         type: 'list',
         name: 'projectTemplate',
         message: `请选择${title}模板`,
-        choices: this.getTemplateChoice(),
+        choices: TEMPLATE_LIST,
       },
     );
     if (type === 'project') {
@@ -186,16 +242,13 @@ class InitCommand extends Command {
         ...component,
       };
     }
+    if (projectInfo.projectName) {
+      projectInfo.name = projectInfo.projectName;
+    }
+    if (projectInfo.projectVersion) {
+      projectInfo.version = projectInfo.projectVersion;
+    }
     return projectInfo;
-  }
-
-  // 获取项目模板选项
-  getTemplateChoice() {
-    return [
-      { value: '@wind-template/react', name: 'react标准模板' },
-      { value: '@wind-template/koa', name: 'koa标准模板' },
-      { value: '@wind-template/vue', name: 'vue标准模板' },
-    ];
   }
 }
 
