@@ -6,18 +6,18 @@ const inquirer = require('inquirer');
 const fse = require('fs-extra');
 const log = require('@wind-webcli/log');
 const semver = require('semver');
-const { TEMPLATE_LIST } = require('./consts');
-const Package = require('@wind-webcli/package')
-const path = require('path')
-const userHome = require('user-home')
-const { spinnerStart, sleep } =  require('@wind-webcli/utils')
+const { TEMPLATE_LIST, WHITELIST_CMD } = require('./consts');
+const Package = require('@wind-webcli/package');
+const path = require('path');
+const userHome = require('user-home');
+const { spinnerStart, sleep, execAsync } = require('@wind-webcli/utils');
+const ejs = require('ejs');
+const glob = require('glob');
 class InitCommand extends Command {
   init() {
     this.projectName = this._argv[0]; // 项目名称
     this.options = this._argv[1]; // 参数选项
     this.force = this.options.force; // 是否强制清空当前目录
-    log.verbose('projectName', this.projectName);
-    log.verbose('force', this.force);
   }
   async exec() {
     try {
@@ -25,8 +25,10 @@ class InitCommand extends Command {
       const projectInfo = await this.prepare();
       if (projectInfo) {
         // 下载模板
-        this.projectInfo = projectInfo
-        await this.downloadTemplate()
+        this.projectInfo = projectInfo;
+        await this.downloadTemplate();
+        // 安装模板
+        await this.installTemplate();
       }
     } catch (error) {
       log.error(error.message);
@@ -62,19 +64,23 @@ class InitCommand extends Command {
           message: '该操作会清空目录下的文件，确定要继续操作吗？',
         });
         if (confirmDelete) {
-          fse.emptyDirSync(localPath);
+          const spinner = spinnerStart('正在清空目录中...');
+          await sleep();
+          await fse.emptyDir(localPath);
+          spinner.stop(true)
         } else {
           return;
         }
       }
     }
-    return this.getProjectInfo()
+    return this.getProjectInfo();
   }
 
   // 下载模板
   async downloadTemplate() {
-    const templateInfo = TEMPLATE_LIST.find(i => i.value = this.projectInfo.projectTemplate)
-    const { value, version } = templateInfo
+    const templateInfo = TEMPLATE_LIST.find((i) => i.value === this.projectInfo.projectTemplate);
+    this.templateInfo = templateInfo;
+    const { value, version } = templateInfo;
     const targetPath = path.resolve(userHome, '.wind-webcli', 'template');
     const storeDir = path.resolve(userHome, '.wind-webcli', 'template', 'node_modules');
     const templatePkg = new Package({
@@ -82,18 +88,18 @@ class InitCommand extends Command {
       storeDir,
       packageName: value,
       packageVersion: version,
-    })
-    log.verbose(targetPath, storeDir)
-    if (!await templatePkg.exists()) {
+    });
+    log.verbose(targetPath, storeDir);
+    if (!(await templatePkg.exists())) {
       // 下载模板
-      const spinner = spinnerStart("开始下载模板中...")
-      await sleep()
+      const spinner = spinnerStart('开始下载模板中...');
+      await sleep();
       try {
-        await templatePkg.install()
+        await templatePkg.install();
       } catch (error) {
-        throw error
+        throw error;
       } finally {
-        spinner.stop(true)
+        spinner.stop(true);
         if (await templatePkg.exists()) {
           log.success('下载模板成功');
           this.templatePkg = templatePkg;
@@ -116,6 +122,117 @@ class InitCommand extends Command {
       }
     }
   }
+
+  // 安装模板
+  async installTemplate() {
+    if (this.templateInfo) {
+      if (!this.templateInfo.type) {
+        this.templateInfo.type = 'normal';
+      }
+      if (this.templateInfo.type === 'normal') {
+        // 标准模板安装
+        await this.installNormalTemplate();
+      } else if (this.templateInfo.type === 'custom') {
+        // 自定义模板安装
+      } else {
+        throw new Error('无法识别的模板类型');
+      }
+    } else {
+      throw new Error('项目模板信息不惨在');
+    }
+  }
+
+  // 执行模板中的脚本
+  async execCommand(command, errMsg) {
+    if (command) {
+      const cmdArray = command.split(' ');
+      const cmd = cmdArray[0];
+      if (WHITELIST_CMD.includes(cmd)) {
+        const args = cmdArray.slice(1);
+        const res = await execAsync(cmd, args, {
+          stdio: 'inherit',
+          cwd: process.cwd(),
+        });
+        if (res !== 0) {
+          throw new Error(errMsg);
+        }
+      } else {
+        throw new Error('不合法的命令：', cmd);
+      }
+    }
+  }
+
+  // ejs模板渲染
+  async ejsRender({ ignore }) {
+    const dir = process.cwd();
+    const projectInfo = this.projectInfo;
+    return new Promise((resolve, reject) => {
+      glob(
+        '**',
+        {
+          cwd: dir,
+          ignore: ignore,
+          nodir: true, // 不处理文件夹
+        },
+        (err, files) => {
+          if (err) {
+            reject(err);
+          }
+          Promise.all(
+            files.map((file) => {
+              const filePath = path.resolve(dir, file);
+              console.log('filePath', filePath);
+              return new Promise((res, rej) => {
+                ejs.renderFile(filePath, projectInfo, {}, (error, result) => {
+                  if (error) {
+                    rej(error);
+                  } else {
+                    fse.writeFileSync(filePath, result);
+                    res(filePath);
+                  }
+                });
+              });
+            }),
+          )
+            .then(() => {
+              resolve();
+            })
+            .catch((e) => {
+              reject(e);
+            });
+        },
+      );
+    });
+  }
+
+  // 标准模板安装
+  async installNormalTemplate() {
+    let spinner = spinnerStart('正在安装模板中...');
+    await sleep();
+    try {
+      const templatePath = path.resolve(this.templatePkg.cacheFilePath, 'template');
+      const targetPath = process.cwd();
+      fse.ensureDirSync(templatePath);
+      fse.ensureDirSync(targetPath);
+      fse.copySync(templatePath, targetPath);
+    } catch (error) {
+      throw error;
+    } finally {
+      spinner.stop(true);
+      log.success('模板安装成功');
+    }
+    // ejs渲染
+    const templateIgnore = this.templateInfo.ignore || [];
+    const ignore = ['**/node_modules/**', ...templateIgnore];
+    await this.ejsRender({ ignore });
+    // 执行脚本
+    const { installCmd, startCmd } = this.templateInfo;
+    await this.execCommand(installCmd, '安装依赖失败');
+    await this.execCommand(startCmd, '启动模板失败');
+  }
+
+  // 自定义模板安装
+  async installCustomTemplate() {}
 
   // 判断目录是否为空
   isDirEmpty(localPath) {

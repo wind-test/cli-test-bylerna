@@ -36,7 +36,9 @@
     "@wind-webcli/log": "file:../../utils/log",
     "@wind-webcli/package": "file:../../models/package",
     "@wind-webcli/utils": "file:../../utils/utils",
+    "ejs": "^3.1.7",
     "fs-extra": "^10.1.0",
+    "glob": "^8.0.1",
     "inquirer": "^8.2.2",
     "semver": "^7.3.7",
     "user-home": "^3.0.0"
