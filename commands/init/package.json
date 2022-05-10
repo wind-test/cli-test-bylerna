@@ -1,6 +1,6 @@
 {
   "name": "@wind-webcli/init",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "description": "脚手架初始化命令",
   "keywords": [
     "cli",
