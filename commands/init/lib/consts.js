@@ -21,6 +21,16 @@ const TEMPLATE_LIST = [
     startCmd: 'npm start',
   },
   {
+    value: 'wind-template-custom-vue2',
+    name: 'vue2自定义模板',
+    version: '1.0.1',
+    type: 'custom',
+    tag: ['project'],
+    ignore: ['**/public/**'],
+    installCmd: 'npm install',
+    startCmd: 'npm run serve',
+  },
+  {
     value: 'wind-template-components',
     name: '组件库标准模板',
     version: '1.0.0',

@@ -56,6 +56,7 @@ class Package {
 
   // 更新package包
   async update() {
+    await this.prepare();
     // 获取最新版本号
     const latestVersion = await getNpmLatestVersion(this.packageName);
     // 查询版本号对应的路径是否存在
@@ -77,7 +78,6 @@ class Package {
     } else {
       this.packageVersion = latestVersion;
     }
-    return latestFilePath;
   }
 
   // 下载package包

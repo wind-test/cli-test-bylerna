@@ -89,7 +89,6 @@ class InitCommand extends Command {
       packageName: value,
       packageVersion: version,
     });
-    log.verbose(targetPath, storeDir);
     if (!(await templatePkg.exists())) {
       // 下载模板
       const spinner = spinnerStart('开始下载模板中...');
@@ -134,6 +133,7 @@ class InitCommand extends Command {
         await this.installNormalTemplate();
       } else if (this.templateInfo.type === 'custom') {
         // 自定义模板安装
+        await this.installCustomTemplate()
       } else {
         throw new Error('无法识别的模板类型');
       }
@@ -231,7 +231,28 @@ class InitCommand extends Command {
   }
 
   // 自定义模板安装
-  async installCustomTemplate() {}
+  async installCustomTemplate() {
+    // 获取自定义模板的入口文件，并执行它。
+    if (await this.templatePkg.exists()) {
+      log.notice('开始安装自定义模板');
+      const rootFile = this.templatePkg.getRootFilePath();
+      if (fs.existsSync(rootFile)) {
+        const templatePath = path.resolve(this.templatePkg.cacheFilePath, 'template');
+        const options = {
+          templateInfo: this.templateInfo,
+          projectInfo: this.projectInfo,
+          sourcePath: templatePath,
+          targetPath: process.cwd(),
+        }
+        const code = `require('${rootFile}')(${JSON.stringify(options)})`
+        log.verbose('code', code)
+        await execAsync('node', ['-e', code], { stdio: 'inherit', cwd: process.cwd() });
+        log.success('自定义模板安装成功');
+      }
+    }else {
+      throw new Error('自定义模板入口文件不存在！');
+    }
+  }
 
   // 判断目录是否为空
   isDirEmpty(localPath) {
