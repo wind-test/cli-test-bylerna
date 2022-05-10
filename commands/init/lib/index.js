@@ -181,7 +181,6 @@ class InitCommand extends Command {
           Promise.all(
             files.map((file) => {
               const filePath = path.resolve(dir, file);
-              console.log('filePath', filePath);
               return new Promise((res, rej) => {
                 ejs.renderFile(filePath, projectInfo, {}, (error, result) => {
                   if (error) {
@@ -322,7 +321,7 @@ class InitCommand extends Command {
         type: 'list',
         name: 'projectTemplate',
         message: `请选择${title}模板`,
-        choices: TEMPLATE_LIST,
+        choices: TEMPLATE_LIST.filter(i => i.tag.includes(type)),
       },
     );
     if (type === 'project') {
@@ -364,6 +363,9 @@ class InitCommand extends Command {
     }
     if (projectInfo.projectVersion) {
       projectInfo.version = projectInfo.projectVersion;
+    }
+    if (projectInfo.componentDescription) {
+      projectInfo.description = projectInfo.projectVersion;
     }
     return projectInfo;
   }
